@@ -1,4 +1,5 @@
 defmodule JuliaPort do
+  use GenFunction, [rand: 2, sum: 1, *: 2]
 
   require Logger
 
@@ -16,11 +17,11 @@ defmodule JuliaPort do
   end
 
   def complex_test(port) do
-    rand(:a, {3,3}, port)
-    rand(:b, {3,3}, port)
-    mul(:c, :a, :b, port)
+    rand(port, :a, 3, 3)
+    rand(port, :b, 3, 3)
+    JuliaPort.*(port, :c, :a, :b)
     port_receive()
-    sum(:d, :c, port)
+    sum(port, :d, :c)
     port_receive(true)
   end
 
@@ -38,35 +39,4 @@ defmodule JuliaPort do
       2000 -> :ok
     end
   end
-
-  defp rand(var, dims, port) do
-    s1 = to_string(var)
-    s2 = "=rand("
-    s3 = 
-      case dims do
-        {m, n} -> to_string(m) <> "," <> to_string(n)
-        n -> to_string(n)
-      end
-    s4 = ")"
-    s = s1 <> s2 <> s3 <> s4
-    port_send(s, port)
-  end
-
-  defp mul(var0, var1, var2, port) do
-    s1 = to_string(var0)
-    s2 = "="
-    s3 = to_string(var1) <> "*" <> to_string(var2)
-    s = s1 <> s2 <> s3
-    port_send(s, port)
-  end
-
-  defp sum(var0, var1, port) do
-    s1 = to_string(var0)
-    s2 = "=sum("
-    s3 = to_string(var1)
-    s4 = ")"
-    s = s1 <> s2 <> s3 <> s4
-    port_send(s, port)
-  end
-
 end
