@@ -1,5 +1,5 @@
 ## julia_port
-experiments on calling julia functions to do scientific computing in elixir using port
+experiments on calling julia functions to do scientific computing in elixir using port and metaprogramming
 
 ### prerequisite
 * [julia](http://julialang.org/) installed and its access from shell
