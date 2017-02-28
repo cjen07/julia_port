@@ -39,6 +39,6 @@ JuliaPort.terminate port
 ```
 
 ### to-do
-- [ ] using otp application
 - [x] using metaprogramming to support more functions
 - [x] better interface of recieving message from julia
+- [ ] computational intensive example to deal with real problem 
