@@ -12,7 +12,14 @@ defmodule GenFunction do
               0 -> ""
               _ -> 
                 args
-                |> Enum.map(&(to_string(&1))) 
+                |> Enum.map(fn arg -> 
+                    case is_list(arg) do
+                      false ->
+                        to_string(arg)
+                      true ->
+                        "[" <> (Enum.map(arg, &(to_string(&1))) |> Enum.join(",")) <> "]"                        
+                    end
+                  end) 
                 |> Enum.join(",")
             end
           s4 = ")"

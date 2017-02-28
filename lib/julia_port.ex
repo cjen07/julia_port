@@ -1,7 +1,6 @@
 defmodule JuliaPort do
   use GenFunction, [rand: 2, sum: 1, *: 2]
-
-  require Logger
+  use GenFunction, [init_network: 1, train: 3, net_eval: 2]
 
   def init() do
     Port.open({:spawn, "julia"}, [:binary])
@@ -13,7 +12,7 @@ defmodule JuliaPort do
 
   def simple_test(port) do
     port_send(port, "1+2")
-    port_receive(port, true)
+    IO.puts port_receive(port, true)
   end
 
   def complex_test(port) do
@@ -22,7 +21,17 @@ defmodule JuliaPort do
     JuliaPort.*(port, :c, :a, :b)
     port_receive(port, false)
     sum(port, :d, :c)
-    port_receive(port, true)
+    IO.puts port_receive(port, true)
+  end
+
+  def real_test(port) do
+    port_send(port, "using BackpropNeuralNet")
+    init_network(port, :net, [2, 3, 2])
+    port_receive(port, false)
+    train(port, :result1, :net, [0.15, 0.7], [0.1, 0.9])
+    IO.puts port_receive(port, true)
+    net_eval(port, :result2, :net, [0.15, 0.7])
+    IO.puts port_receive(port, true)
   end
 
   defp port_send(port, command) do
@@ -30,17 +39,17 @@ defmodule JuliaPort do
   end
 
   defp port_receive(port, verbose?) do
-    port_send(port, ":f")
+    port_send(port, ":Ω")
     loop(verbose?, "")
   end
 
   defp loop(verbose?, data) do
     receive do
       {_pid, {:data, raw}} ->
-        data_new = String.trim(raw)
+        data_new = String.replace(raw, "\n", "ω") |> String.trim |>  String.replace("ω", " ")
         cond do
-          String.contains? data_new, "f" ->
-            if verbose?, do: "received data: " <> data
+          String.contains? data_new, "Ω" ->
+            if verbose?, do: "received data: " <> String.trim(data)
           data_new == ":" or data_new == "" -> 
             loop(verbose?, data)
           true ->
