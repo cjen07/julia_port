@@ -7,14 +7,14 @@ experiments on calling julia functions to do scientific computing in elixir usin
 
 ### usage
 * simple_test: arithmetics 
-```
+```elixir
 def simple_test(port) do
   port_send(port, "1+2")
   IO.puts port_receive(port, true)
 end
 ```
 * complex_test: linear algebra
-```
+```elixir
 use GenFunction, [rand: 2, sum: 1, *: 2]
 
 def complex_test(port) do
@@ -27,7 +27,7 @@ def complex_test(port) do
 end
 ```
 * real_test: neural network
-```
+```elixir
 use GenFunction, [init_network: 1, train: 3, net_eval: 2]
 
 def real_test(port) do
@@ -41,7 +41,7 @@ def real_test(port) do
 end
 ```
 * run
-```
+```elixir
 iex -S mix
 port = JuliaPort.init
 # => #Port<0.5310>
