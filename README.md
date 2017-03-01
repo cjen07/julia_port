@@ -59,4 +59,7 @@ JuliaPort.terminate port
 ### to-do
 - [x] using metaprogramming to support more functions
 - [x] better interface of communicating with julia
-- [x] potentially computational intensive real problem 
+- [x] potentially computational intensive real problem
+- [ ] support more julia syntaxes other than literals and brackets
+- [ ] publish it in hex  
+- [ ] build a real-world project with it
