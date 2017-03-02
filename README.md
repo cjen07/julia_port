@@ -60,6 +60,6 @@ JuliaPort.terminate port
 - [x] using metaprogramming to support more functions
 - [x] better interface of communicating with julia
 - [x] potentially computational intensive real problem
-- [ ] support more julia syntaxes other than literals and brackets
+- [ ] support more julia [syntax](https://en.wikibooks.org/wiki/Introducing_Julia/Arrays_and_tuples)
 - [ ] publish it in hex  
 - [ ] build a real-world project with it
