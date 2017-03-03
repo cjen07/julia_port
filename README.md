@@ -17,7 +17,7 @@ end
 ```
 
 remark: if you install the package as a dependency, in order to run `script_test`,
-you have to move ./deps/julia_port/julia and ./deps/julia_port/data to ./julia and ./data respectively
+you have to move `./deps/julia_port/julia` and `./deps/julia_port/data` to `./julia` and `./data` respectively
 ### usage
 * simple_test: arithmetics 
 ```elixir
