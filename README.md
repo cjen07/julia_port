@@ -40,6 +40,20 @@ def real_test(port) do
   IO.puts port_receive(port, true)
 end
 ```
+* script_test: linear regression
+```elixir
+use GenFunction, [load_data: 1, lr_train: 2, lr_test: 3]
+
+def script_test(port) do
+  include_script(port, "./julia/lr.jl")
+  load_data(port, {:x_train, :y_train}, "./data/train")
+  load_data(port, {:x_test, :y_test}, "./data/test")
+  lr_train(port, :beta, :x_train, :y_train)
+  port_receive(port, false)
+  lr_test(port, :error, :x_test, :y_test, :beta)
+  IO.puts port_receive(port, true)
+end
+```
 * run
 ```elixir
 iex -S mix
@@ -52,6 +66,8 @@ JuliaPort.complex_test port
 JuliaPort.real_test port
 # => received data: 0.09117138901807831
 # => received data: 2-element Array{Float64,1}: 0.381892 0.592638
+JuliaPort.script_test port
+# => received data: 0.9587912087912088
 JuliaPort.terminate port
 # => {#PID<0.143.0>, :close}
 ```
@@ -60,6 +76,5 @@ JuliaPort.terminate port
 - [x] using metaprogramming to support more functions
 - [x] better interface of communicating with julia
 - [x] potentially computational intensive real problem
-- [ ] support more julia [syntax](https://en.wikibooks.org/wiki/Introducing_Julia/Arrays_and_tuples)
-- [ ] publish it in hex  
-- [ ] build a real-world project with it
+- [ ] publish it in hex as a library
+
