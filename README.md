@@ -5,6 +5,19 @@ example project to invoke julia functions in elixir to do scientific computing u
 * [julia](http://julialang.org/) installed and its access from shell
 * in real_test: [`BackpropNeuralNet`](https://github.com/compressed/BackpropNeuralNet.jl) installed
 
+### Installation
+
+the package can be installed
+by adding `julia_port` to your list of dependencies in `mix.exs`:
+
+```elixir
+def deps do
+  [{:julia_port, "~> 0.1.0"}]
+end
+```
+
+remark: if you install the package as a dependency, in order to run `script_test`,
+you have to move ./deps/julia_port/julia and ./deps/julia_port/data to ./julia and ./data respectively
 ### usage
 * simple_test: arithmetics 
 ```elixir
