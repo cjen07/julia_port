@@ -1,6 +1,7 @@
 defmodule JuliaPort do
   use GenFunction, [rand: 2, sum: 1, *: 2]
   use GenFunction, [init_network: 1, train: 3, net_eval: 2]
+  use GenFunction, [include: 1, load_data: 1, lr_train: 2, lr_test: 3]
 
   def init() do
     Port.open({:spawn, "julia"}, [:binary])
@@ -34,8 +35,23 @@ defmodule JuliaPort do
     IO.puts port_receive(port, true)
   end
 
+  def script_test(port) do
+    include_script(port, "./julia/lr.jl")
+    load_data(port, {:x_train, :y_train}, "./data/train")
+    load_data(port, {:x_test, :y_test}, "./data/test")
+    lr_train(port, :beta, :x_train, :y_train)
+    port_receive(port, false)
+    lr_test(port, :error, :x_test, :y_test, :beta)
+    IO.puts port_receive(port, true)
+    :ok
+  end
+
   defp port_send(port, command) do
     send port, {self(), {:command, command <> "\n"}}
+  end
+
+  defp include_script(port, path) do
+    port_send(port, "include(\"" <> path <> "\")")
   end
 
   defp port_receive(port, verbose?) do

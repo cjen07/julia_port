@@ -5,7 +5,13 @@ defmodule GenFunction do
       quote do
         def unquote(name)(unquote_splicing(args)) do
           [a0 | [ a1 | args ]] = [unquote_splicing(args)]
-          s1 = to_string(a1)
+          s1 = 
+            cond do
+              is_tuple(a1) ->
+                "(" <> (Tuple.to_list(a1) |> Enum.map(&(to_string(&1))) |> Enum.join(",")) <> ")"
+              true ->
+                to_string(a1)
+            end
           s2 = "=#{unquote(name)}("
           s3 = 
             case unquote(arity) do
@@ -13,11 +19,13 @@ defmodule GenFunction do
               _ -> 
                 args
                 |> Enum.map(fn arg -> 
-                    case is_list(arg) do
-                      false ->
-                        to_string(arg)
-                      true ->
-                        "[" <> (Enum.map(arg, &(to_string(&1))) |> Enum.join(",")) <> "]"                        
+                    cond do
+                      is_list(arg) ->
+                        "[" <> (Enum.map(arg, &(to_string(&1))) |> Enum.join(",")) <> "]"
+                      is_bitstring(arg) ->
+                        "\"" <> arg <> "\""
+                      true -> 
+                        to_string(arg)                    
                     end
                   end) 
                 |> Enum.join(",")
