@@ -84,10 +84,3 @@ JuliaPort.script_test port
 JuliaPort.terminate port
 # => {#PID<0.143.0>, :close}
 ```
-
-### to-do
-- [x] using metaprogramming to support more functions
-- [x] better interface of communicating with julia
-- [x] potentially computational intensive real problem
-- [x] add docs and publish it in hex as a library
-
