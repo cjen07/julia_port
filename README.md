@@ -1,5 +1,5 @@
 ## julia_port
-invoke julia functions in elixir to do scientific computing using port and metaprogramming
+example project to invoke julia functions in elixir to do scientific computing using port and metaprogramming
 
 ### prerequisite
 * [julia](http://julialang.org/) installed and its access from shell
@@ -76,5 +76,5 @@ JuliaPort.terminate port
 - [x] using metaprogramming to support more functions
 - [x] better interface of communicating with julia
 - [x] potentially computational intensive real problem
-- [ ] add docs and publish it in hex as a library
+- [x] add docs and publish it in hex as a library
 
