@@ -76,5 +76,5 @@ JuliaPort.terminate port
 - [x] using metaprogramming to support more functions
 - [x] better interface of communicating with julia
 - [x] potentially computational intensive real problem
-- [ ] publish it in hex as a library
+- [ ] add docs and publish it in hex as a library
 
