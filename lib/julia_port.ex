@@ -43,7 +43,6 @@ defmodule JuliaPort do
     port_receive(port, false)
     lr_test(port, :error, :x_test, :y_test, :beta)
     IO.puts port_receive(port, true)
-    :ok
   end
 
   defp port_send(port, command) do
