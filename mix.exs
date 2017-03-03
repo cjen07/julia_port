@@ -7,6 +7,8 @@ defmodule JuliaPort.Mixfile do
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     description: description(),
+     package: package(),
      deps: deps()]
   end
 
@@ -28,6 +30,26 @@ defmodule JuliaPort.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:ex_doc, "~> 0.14", only: :dev},
+      {:earmark, "~> 1.1", only: :dev}
+    ]
   end
+
+  defp description do
+    """
+    example project to invoke julia functions in elixir to do scientific computing using port and metaprogramming
+    """
+  end
+
+  defp package do
+    [
+     files: ["data", "julia", "lib", "mix.exs", "README.md"],
+     maintainers: ["Wang Chen"],
+     licenses: ["MIT"],
+     links: %{"GitHub" => "https://github.com/cjen07/julia_port",
+              "Docs" => "http://hexdocs.pm/julia_port/"}
+     ]
+  end
+
 end

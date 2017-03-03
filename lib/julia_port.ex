@@ -1,21 +1,38 @@
 defmodule JuliaPort do
+  @moduledoc """
+  example project to invoke julia functions in elixir to do scientific computing using port and metaprogramming
+  """
+  alias JuliaPort.GenFunction
+
   use GenFunction, [rand: 2, sum: 1, *: 2]
   use GenFunction, [init_network: 1, train: 3, net_eval: 2]
   use GenFunction, [load_data: 1, lr_train: 2, lr_test: 3]
 
+  @doc """
+  open a port to start a julia process
+  """
   def init() do
     Port.open({:spawn, "julia"}, [:binary])
   end
 
+  @doc """
+  close a port to end a julia process
+  """
   def terminate(port) do
     send port, {self(), :close}
   end
 
+  @doc """
+  example to do arithmetics
+  """
   def simple_test(port) do
     port_send(port, "1+2")
     IO.puts port_receive(port, true)
   end
 
+  @doc """
+  example to do linear algebra
+  """
   def complex_test(port) do
     rand(port, :a, 3, 3)
     rand(port, :b, 3, 3)
@@ -25,6 +42,11 @@ defmodule JuliaPort do
     IO.puts port_receive(port, true)
   end
 
+  @doc """
+  example to do neural network
+
+  prerequisite: [`BackpropNeuralNet`](https://github.com/compressed/BackpropNeuralNet.jl) installed
+  """
   def real_test(port) do
     port_send(port, "using BackpropNeuralNet")
     init_network(port, :net, [2, 3, 2])
@@ -35,6 +57,9 @@ defmodule JuliaPort do
     IO.puts port_receive(port, true)
   end
 
+  @doc """
+  example to do linear regression
+  """
   def script_test(port) do
     include_script(port, "./julia/lr.jl")
     load_data(port, {:x_train, :y_train}, "./data/train")
@@ -45,20 +70,36 @@ defmodule JuliaPort do
     IO.puts port_receive(port, true)
   end
 
-  defp port_send(port, command) do
+  @doc """
+  send a command through a port
+  """
+  def port_send(port, command) do
     send port, {self(), {:command, command <> "\n"}}
   end
 
-  defp include_script(port, path) do
+  @doc """
+  include a script in julia repl
+  """
+  def include_script(port, path) do
     port_send(port, "include(\"" <> path <> "\")")
   end
 
-  defp port_receive(port, verbose?) do
+  @doc """
+  recieve messages from a port
+
+  remark: a trick to use Ω and ω as finished signal
+  """
+  def port_receive(port, verbose?) do
     port_send(port, ":Ω")
     loop(verbose?, "")
   end
 
-  defp loop(verbose?, data) do
+  @doc """
+  helper function to recieve messages
+
+  remark: one may modify this function to customise output format
+  """
+  def loop(verbose?, data) do
     receive do
       {_pid, {:data, raw}} ->
         data_new = String.replace(raw, "\n", "ω") |> String.trim |>  String.replace("ω", " ")

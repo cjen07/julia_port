@@ -1,8 +1,18 @@
-defmodule GenFunction do
+defmodule JuliaPort.GenFunction do
+  @moduledoc """
+  extensible interface of julia function definition in elixir using macro 
+  """
+
+  @doc ~S"""
+  the macro to define functions with dynamic name and arity 
+  """
   defmacro __using__(opts) do
     Enum.map(opts, fn {name, arity} ->
       args = Enum.map(0..arity+1, &Macro.var(:"a#{&1}", __MODULE__))
       quote do
+        @doc """
+        helper function defined in GenFunction
+        """
         def unquote(name)(unquote_splicing(args)) do
           [a0 | [ a1 | args ]] = [unquote_splicing(args)]
           s1 = 
