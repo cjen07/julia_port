@@ -1,7 +1,7 @@
 defmodule JuliaPort do
   use GenFunction, [rand: 2, sum: 1, *: 2]
   use GenFunction, [init_network: 1, train: 3, net_eval: 2]
-  use GenFunction, [include: 1, load_data: 1, lr_train: 2, lr_test: 3]
+  use GenFunction, [load_data: 1, lr_train: 2, lr_test: 3]
 
   def init() do
     Port.open({:spawn, "julia"}, [:binary])
