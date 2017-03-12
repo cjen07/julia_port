@@ -84,7 +84,3 @@ JuliaPort.script_test port
 JuliaPort.terminate port
 # => {#PID<0.143.0>, :close}
 ```
-
-### to-do
-- [ ] add [mocha_cnn](https://github.com/cjen07/mocha_cnn) to an example
-- [ ] add complex [mocha.jl](https://github.com/pluskid/Mocha.jl) example
