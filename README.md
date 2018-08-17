@@ -1,6 +1,12 @@
 ## julia_port
 example project to invoke julia functions in elixir to do scientific computing using port and metaprogramming
 
+### news
+* support julia v1.0.0
+
+### remarks
+* currently real_test and script_test is not updated
+
 ### prerequisite
 * [julia](http://julialang.org/) installed and its access from shell
 * in real_test: [`BackpropNeuralNet`](https://github.com/compressed/BackpropNeuralNet.jl) installed
@@ -19,7 +25,7 @@ end
 remark: if you install the package as a dependency, in order to run `script_test`,
 you have to move `./deps/julia_port/julia` and `./deps/julia_port/data` to `./julia` and `./data` respectively
 ### usage
-* simple_test: arithmetics 
+* simple_test: arithmetics
 ```elixir
 def simple_test(port) do
   port_send(port, "1+2")
@@ -72,15 +78,18 @@ end
 iex -S mix
 port = JuliaPort.init
 # => #Port<0.5310>
+JuliaPort.print_version port
+# => received data: v"1.0.0"
 JuliaPort.simple_test port
 # => received data: 3
 JuliaPort.complex_test port
 # => received data: 5.710327361153192
-JuliaPort.real_test port
-# => received data: 0.09117138901807831
-# => received data: 2-element Array{Float64,1}: 0.381892 0.592638
-JuliaPort.script_test port
-# => received data: 0.9587912087912088
+# currently real_test and script_test is not updated
+# JuliaPort.real_test port
+# # => received data: 0.09117138901807831
+# # => received data: 2-element Array{Float64,1}: 0.381892 0.592638
+# JuliaPort.script_test port
+# # => received data: 0.9587912087912088
 JuliaPort.terminate port
 # => {#PID<0.143.0>, :close}
 ```
