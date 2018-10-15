@@ -1,11 +1,12 @@
+using DelimitedFiles
 function load_data(f :: String)
   a = open(readdlm, f)
   x2 = a[a[:,1] .== 2, 2:end]
   x3 = a[a[:,1] .== 3, 2:end]
-  y2 = ones(a[a[:,1] .== 2, 1])
-  y3 = (-1) *ones(a[a[:,1] .== 3, 1])
+  y2 = ones(size(x2,1))
+  y3 = (-1)*ones(size(x3,1))
   x = vcat(x2, x3)
-  x = hcat(ones(x[:,1]), x)
+  x = hcat(ones(size(x,1)), x)
   y = vcat(y2, y3)
   (x, y)
 end

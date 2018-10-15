@@ -2,14 +2,17 @@
 example project to invoke julia functions in elixir to do scientific computing using port and metaprogramming
 
 ### news
-* support julia v1.0.0
+* support julia v1.0.1
+* support elixir v1.7.3
+* support erlang 21.0
+* the script_test is supported
+* the real_test is removed because it does not support julia v1.0.1
 
 ### remarks
-* currently real_test and script_test is not updated
+* the author will experiment with [tensorflow.jl](https://github.com/malmaud/TensorFlow.jl) for good reason
 
 ### prerequisite
 * [julia](http://julialang.org/) installed and its access from shell
-* in real_test: [`BackpropNeuralNet`](https://github.com/compressed/BackpropNeuralNet.jl) installed
 
 ### Installation
 
@@ -18,7 +21,7 @@ by adding `julia_port` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:julia_port, "~> 0.1.0"}]
+  [{:julia_port, "~> 0.2.0"}]
 end
 ```
 
@@ -42,20 +45,6 @@ def complex_test(port) do
   JuliaPort.*(port, :c, :a, :b)
   port_receive(port, false)
   sum(port, :d, :c)
-  IO.puts port_receive(port, true)
-end
-```
-* real_test: neural network
-```elixir
-use GenFunction, [init_network: 1, train: 3, net_eval: 2]
-
-def real_test(port) do
-  port_send(port, "using BackpropNeuralNet")
-  init_network(port, :net, [2, 3, 2])
-  port_receive(port, false)
-  train(port, :result1, :net, [0.15, 0.7], [0.1, 0.9])
-  IO.puts port_receive(port, true)
-  net_eval(port, :result2, :net, [0.15, 0.7])
   IO.puts port_receive(port, true)
 end
 ```
@@ -84,12 +73,8 @@ JuliaPort.simple_test port
 # => received data: 3
 JuliaPort.complex_test port
 # => received data: 5.710327361153192
-# currently real_test and script_test is not updated
-# JuliaPort.real_test port
-# # => received data: 0.09117138901807831
-# # => received data: 2-element Array{Float64,1}: 0.381892 0.592638
-# JuliaPort.script_test port
-# # => received data: 0.9587912087912088
+JuliaPort.script_test port
+# => received data: 0.9587912087912088
 JuliaPort.terminate port
 # => {#PID<0.143.0>, :close}
 ```

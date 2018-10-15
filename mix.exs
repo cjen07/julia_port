@@ -4,8 +4,8 @@ defmodule JuliaPort.Mixfile do
   def project do
     [
       app: :julia_port,
-      version: "0.1.0",
-      elixir: "~> 1.4",
+      version: "0.2.0",
+      elixir: "~> 1.6",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       description: description(),
@@ -33,7 +33,7 @@ defmodule JuliaPort.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:ex_doc, "~> 0.14", only: :dev},
+      {:ex_doc, "~> 0.19", only: :dev},
       {:earmark, "~> 1.1", only: :dev}
     ]
   end
